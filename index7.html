@@ -1,0 +1,49 @@
+<html>
+	<head>
+		<script type="text/javascript"
+		src="http://mbostock.github.com/d3/d3.js">
+		</script>
+		<h1>The connection between duration and result from Builds-Table</h1>
+	</head>
+	<body>
+		<script>
+				d3.json('builds.json', 
+            function(data){
+                
+                y_scale = d3.scale.linear().range([200,10])
+				x_scale = d3.scale.linear().range([0,0.5])
+                
+                xAxis = d3.svg.axis().scale(x_scale)
+                yAxis = d3.svg.axis().scale(y_scale).orient("left")
+                
+                svg = d3.select("body")
+                    .append("svg");
+                    
+                svg.selectAll("circle")
+                    .data(data)
+                    .enter()
+                    .append("circle")
+                    .attr("class","brill")
+                    .attr("cx", function(d){return x_scale(d.duration)})
+                    .attr("cy", function(d){return y_scale(d.result)})
+                    .attr("r", 6)
+                    .style("fill","red")
+                    .style("fill-opacity", 0.8)
+                    .style("stroke", "black");
+                
+                svg.append("svg:g")
+                    .attr("class", "xaxis")
+                    .attr("transform","translate(0,280)")
+                    .call(xAxis)
+                
+                svg.append("svg:g")
+                    .attr("class", "yaxis")
+                    .attr("transform", "translate(30,0)")
+                    .call(yAxis)
+            }
+        )
+				
+
+		</script>
+	</body>
+</html>
